@@ -6,9 +6,18 @@
 #include <vector>
 using namespace std;
 
+class NetworkSwitch;
 
-struct State {
-
+struct State 
+{
+    virtual void OnLine(NetworkSwitch* networkSwitch) 
+    {
+        cout << "network is already online" << endl;
+    }
+    virtual void OffLine(NetworkSwitch* networkSwitch) 
+    {
+        cout << "network is already offline" << endl;
+    }
 };
 
 
@@ -16,17 +25,23 @@ struct OnlineState : State
 {
     OnlineState() 
     {
-        cout << "network is online\n";
+        cout << "network is online" << endl;
     }
+
+    void OffLine(NetworkSwitch* networkSwitch) override;
 };
 
 struct OfflineState : State
 {
     OfflineState() 
     {
-        cout << "network is offline\n";
+        cout << "network is offline" << endl;
     }
+
+    void OnLine(NetworkSwitch* networkSwitch) override;
+
 };
+
 
 class NetworkSwitch 
 {
@@ -34,18 +49,43 @@ class NetworkSwitch
     public:
     NetworkSwitch()
     {
-        state = new OfflineState;
+        state = new OfflineState();
     }
     void SetState(State* state) 
     {
         this->state = state;
     }
+
+    void OnLine() 
+    {
+        state->OnLine(this);
+    }
+
+    void OffLine() 
+    {
+        state->OffLine(this);
+    }
+};
+
+void OnlineState::OffLine(NetworkSwitch* networkSwitch) 
+{
+     networkSwitch->SetState(new OfflineState());
+     delete this;
+};
+
+void OfflineState::OnLine(NetworkSwitch* networkSwitch) 
+{
+     networkSwitch->SetState(new OnlineState());
+     delete this;
 };
 
 
 int main(int argc, char const *argv[])
 {
-    /* code */
+    NetworkSwitch ns;
+    ns.OnLine();
+    ns.OffLine();
+    ns.OffLine();
     return 0;
 }
 
