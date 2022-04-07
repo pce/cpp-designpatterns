@@ -1,1 +1,49 @@
 # Cpp-DesignPatterns
+
+## Behavioural
+
+### Intepreter
+
+Processing of structured, textual input and conversion into OOP structures by lexing (decomposition into tokens) and subsequent parsing (interpretation of tokens).
+
+#### Examples
+
+- [x] Calculator
+
+
+### State
+
+The state patterns allow an object to behave differently.
+It defines the state as an interface that all states implement.
+
+
+Instead of `STATE_ONLINE` and `STATE_OFFLINE`, each State can encalsulated in a class that implements the state interface. 
+Each State can be mapped into a class, i.e. `OnLineState` and `OffLineState`.
+
+Each state needs a reference to the context class, e.g. `NetworkSwitch`. 
+For example, a constructor injection and Context as a member that allows to switch to a new state.
+
+Here is a clear difference to the Strategy Pattern: The client cannot know the internal states, while with Strategy the client selects the strategy.  
+Strategy is like flexible subclassing. 
+
+The State pattern allows you to replace a set of decision trees by encapsulating the behavior. 
+We've all seen and wrote many conditionals in the form of unacceptably complex, nested if and else rules.
+
+
+#### Examples
+
+- [x] Classic State Pattern 
+- [ ] modern State Pattern 
+- [ ] Object-Oriented Decision Architecture in AI (hopefully in a upcoming Blog entry)
+
+#### Clasic State Pattern
+
+The NetworkSwitch is the Context Class that can have the internal States.
+
+
+
+# References
+
+- GoF "Design Patterns: Elements of Reusable Object-Oriented Software"
+- Head First Design Patterns
+- Nesteruk, Dmitri  "design patterns in modern c++"
