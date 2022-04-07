@@ -16,8 +16,7 @@ Processing of structured, textual input and conversion into OOP structures by le
 The state patterns allow an object to behave differently.
 It defines the state as an interface that all states implement.
 
-
-Instead of `STATE_ONLINE` and `STATE_OFFLINE`, each State can encalsulated in a class that implements the state interface. 
+Instead of `STATE_ONLINE` and `STATE_OFFLINE`, each State can encapsulated in a class that implements the state interface. 
 Each State can be mapped into a class, i.e. `OnLineState` and `OffLineState`.
 
 Each state needs a reference to the context class, e.g. `NetworkSwitch`. 
@@ -28,6 +27,11 @@ Strategy is like flexible subclassing.
 
 The State pattern allows you to replace a set of decision trees by encapsulating the behavior. 
 We've all seen and wrote many conditionals in the form of unacceptably complex, nested if and else rules.
+
+Representing State by a class and not just by an value of a enum, each class owns the code and can manage transitions to another state. 
+
+Another interesting architecture could be "Hierarchical State Machines" or a stack of states where events and state updates are delivered from the top "SuperState" to the bottom "SubState" and subsequent rendering from the bottom up. 
+This could also reduce code duplication and higher cohesion of state classes.
 
 
 #### Examples
