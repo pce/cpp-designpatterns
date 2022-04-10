@@ -34,15 +34,32 @@ Another interesting architecture could be "Hierarchical State Machines" or a sta
 This could also reduce code duplication and higher cohesion of state classes.
 
 
+
+
 #### Examples
 
 - [x] Classic State Pattern 
 - [ ] modern State Pattern 
-- [ ] Object-Oriented Decision Architecture in AI (hopefully in a upcoming Blog entry)
+- [ ] Object-Oriented Decision Architecture in AI (hopefully in one of my next blog entries)
 
-#### Clasic State Pattern
+#### Classic State Pattern
 
 The NetworkSwitch is the Context Class that can have the internal States.
+
+
+### Observer
+
+The Observer pattern defines a onbe-to-many dependency bewtween objects.
+Loose coupling of Subject and Observer allows to build a felxible OO System that scales.
+  
+There are many differnet ways to implement the observer pattern.
+The Terminology varies: observer and observable, event and subscriber, signal and slot (QT, boost)
+, broadcaster and listener.
+
+#### Examples
+
+- [x] Classic Observer Pattern 
+- [ ] modern Observer Pattern 
 
 
 

@@ -1,9 +1,7 @@
 
 #include <iostream>
 #include <ostream>
-#include <sstream>
-#include <string>
-#include <vector>
+
 using namespace std;
 
 class NetworkSwitch;
