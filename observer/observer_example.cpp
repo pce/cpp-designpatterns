@@ -1,85 +1,129 @@
 #include <iostream>
 #include <vector>
 
-#include "observer.hpp"
-#include "observable.hpp"
-
 using namespace std;
 
-// This example is just a Proof of Concept as part of an exercise:
-// Rat's attack in Swarms, therefore one rat has the power of all rats in this Game
+class Subject;
 
-
-struct Game
+/*
+ * Observer
+ * defines an updating interface for objects that should be notified
+ * of changes in a subject
+ */
+class Observer
 {
-  // power of rats
-  int attack{0};
+public:
+  virtual ~Observer() {}
+
+  virtual int getState() = 0;
+  virtual void update(Subject *subject) = 0;
 };
 
-struct Rat : Observable<Rat>
+/*
+ * Concrete Observer
+ * stores state of interest to ConcreteObserver objects and
+ * sends a notification to its observers when its state changes
+ */
+class ConcreteObserver : public Observer
 {
-  Game &game;
-  int attack{1};
+public:
+  ConcreteObserver(const int state) : observer_state(state) {}
 
-  Rat(Game &game) : game(game)
+  ~ConcreteObserver() {}
+
+  int getState()
   {
+    return observer_state;
   }
 
-  void init()
-  {
-    // constructor not subscribed
-    notify(*this, "spawn");
-  }
+  void update(Subject *subject);
 
-  void doAttack()
-  {
-    cout << "Attack with the power of the swarm: " << this->game.attack << endl;
-  }
-
-  ~Rat()
-  {
-    // rat dies
-    notify(*this, "destroy");
-  }
-};
-
-struct RatConcreteObserver
-    : public Observer<Rat>
-{
 private:
-  void update(Rat &rat, const std::string &action_name) override
-  {
-    cout << "Rat's " << action_name << ", sum has changed to ";
-    if (action_name == "spawn")
-    {
-      cout << "Rat's " << action_name << ", sum has changed to ";
-      rat.game.attack += rat.attack;
-    }
-    if (action_name == "destroy")
-    {
-      rat.game.attack -= rat.attack;
-    }
-    cout << rat.attack << endl;
-  }
+  int observer_state;
 };
+
+/*
+ * Subject
+ * knows its observers and provides an interface for attaching
+ * and detaching observers
+ */
+class Subject
+{
+public:
+  virtual ~Subject() {}
+
+  void attach(Observer *observer)
+  {
+    observers.push_back(observer);
+  }
+
+  void detach(const int index)
+  {
+    observers.erase(observers.begin() + index);
+  }
+
+  void notify()
+  {
+    for (unsigned int i = 0; i < observers.size(); i++)
+    {
+      observers.at(i)->update(this);
+    }
+  }
+
+  virtual int getState() = 0;
+  virtual void setState(const int s) = 0;
+
+private:
+  std::vector<Observer *> observers;
+};
+
+/*
+ * Concrete Subject
+ * stores state that should stay consistent with the subject's
+ */
+class ConcreteSubject : public Subject
+{
+public:
+  ~ConcreteSubject() {}
+
+  int getState()
+  {
+    return subject_state;
+  }
+
+  void setState(const int state)
+  {
+    subject_state = state;
+  }
+
+private:
+  int subject_state;
+};
+
+void ConcreteObserver::update(Subject *subject)
+{
+  observer_state = subject->getState();
+  std::cout << "Observer state updated." << std::endl;
+}
 
 auto main() -> int
 {
-  Game game;
-  RatConcreteObserver ro;
 
-  Rat rat(game);
-  rat.subscribe(ro);
-  rat.init();
+  ConcreteObserver observer1(1);
+  ConcreteObserver observer2(2);
 
-  rat.doAttack();
+  std::cout << "Observer 1 state: " << observer1.getState() << std::endl;
+  std::cout << "Observer 2 state: " << observer2.getState() << std::endl;
 
-  Rat rat2(game);
-  rat2.subscribe(ro);
-  rat2.init();
+  Subject *subject = new ConcreteSubject();
+  subject->attach(&observer1);
+  subject->attach(&observer2);
 
-  rat.doAttack();
-  rat2.doAttack();
+  subject->setState(2);
+  subject->notify();
+
+  std::cout << "Observer 1 state: " << observer1.getState() << std::endl;
+  std::cout << "Observer 2 state: " << observer2.getState() << std::endl;
 
   return 0;
 }
