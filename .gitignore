@@ -3,4 +3,5 @@ a.out
 *.dSYM
 
 state
+observer_example
 .vscode

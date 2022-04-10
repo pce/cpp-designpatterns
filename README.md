@@ -56,6 +56,9 @@ There are many differnet ways to implement the observer pattern.
 The Terminology varies: observer and observable, event and subscriber, signal and slot (QT, boost)
 , broadcaster and listener.
 
+- Observable provides a way to subscribe to an event (signal)
+- Observer performs the subscription
+
 #### Examples
 
 - [x] Classic Observer Pattern 
